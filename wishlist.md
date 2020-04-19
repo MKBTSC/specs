@@ -1,0 +1,39 @@
+# Firmware wishlist
+
+- [ ] 4/17 - Nicell - Being able to use it on more than just Nordic chips
+    - the layered structure itself would solve this, we would only need a chip-specific lowware
+- [ ] 4/17 - Nicell - "Have a way to flip between 10ms BT response times and something more reasonable for general typing on the fly. Gamers need their low latency"
+    - the lowware should expose dynamic configuration params that the firmware actions can tamper with...
+- [ ] 4/17 - Nicell - "Be able to use something like an nrf52840 dongle to connect to any computer even if it doesn't have BT (should offer a better connection than that of BT anyways)"
+    - this should be solvable with different midwares... if we expect this to be dynamically changeable, that's a different thing altogether. but if the whole config and keymap can be written as text, which would get dynamically loaded at boot time, maybe there could be more, with a switch to decide which to load
+- [ ] 4/19 - iamatesla - "Critical features IMO: very easy pin remapping built in."
+    - the pin names would come from the controller's respective lowware, everyone maps it however is appropriate for the given controller
+- [ ] 4/19 - iamatesla - "'Key maps' need to be loadable via some simple mechanism. Lets pick the most well supported formatting... maype JSON or XML? IDK?"
+    - yes, this should be the top level (end user facing) standard
+- [ ] 4/19 - iamatesla - "The code "thread" structure should be well defined too. I did this in my code with FreeRTOS threads. I have a main thread for status, a thread for scanning, a thread for underlighting, etc..."
+    - the lowware could expose a way to start threads, which the higher level can use
+    - but agreed, we should probably talk about _how_ those higher layers would want to use this
+- [ ] 4/19 - iamatesla - "I do eventually want to be able to "dynamically upload" new keymappings to the board on the fly."
+    - dynamic keymap loading at boottime... again
+- [ ] 4/19 - iamatesla - "One potential problem I see is with hardware variance. For example, my keyboard PCB uses shift registers to scan through each of 14 columns."
+    - this would mean a specific midware where the scanning routine is different
+    - but _only_ a midware, as the lowware could be the same nrf52-based one, and the highware is still the same
+    - maybe even split the midware into different "drivers" as algernon suggested, and that way only the matrix scanning would need to be changed within the midware, as the topology and HID stuff are the same...
+- [ ] 4/19 - Nicell - "It would be neat if each board definition could define their "power pins" too. Ones that either control regulators or fets to enable/disable different power features. Seems like it will be extremely common among different nrf chips."
+    - lowware could do this... even provide functions for this instead of the pin numbers, which the higher abstractions wouldn't even need to know about
+- [ ] 4/19 - jpconstantineau - "Analog read for the battery voltage divider as well as the multiplication factor to account for different resistor values. These can be added to the controller definition too"
+    - again, they could. or maybe they could be abstracted away by a "measure" method and each controller knows how to provide its own measurements
+- [ ] 4/19 - nacly - "Is text config files a goal at all with this project?"
+    - indeed.
+- [ ] 4/19 - DanL4 - "One goal is to have a legible/easy to read and edit keymap file format"
+    - so not the mechanics of when/how it's loaded, but how human-friendly it is. noted.
+- [ ] 4/19 - DanL4 - "Tap/mod is a basic feature for many of us here, even if not as popular among the general /mk public"
+    - seconded, highware stuff, definitely need to support this.
+- [ ] 4/19 - DanL4 - "some firmware allow for upper+lower (in that order) = adjust#1 while lower+upper = adjust#2.
+    - order dependent layer stacks, highware stuff. lower priority, but shouldn't be too hard to support.
+- [ ] 4/19 - nacly - "would it be possible to have a keycode that unpairs the keyboard?"
+    - midware would need to expose something the highware actions can manipulate, should be doable.
+- [ ] 4/19 - Nicell - "Most commercial wireless bt boards offer Bluetooth "profiles". Each profile memorizes a specific paired device, and when you switch profiles it disconnects from one paired device to the other."
+    - should be a midware thing, exposing some controls so that the highware can manipulate it dynamically
+- [ ] 4/19 - nacly - "Boards should be able to distinguish their corresponding slave's fingerprint"
+    - midware stuff, not to connect to some other slave, if, e.g., two split boards are flashed with the same firmware
