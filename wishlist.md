@@ -37,3 +37,7 @@
     - should be a midware thing, exposing some controls so that the highware can manipulate it dynamically
 - [ ] 4/19 - nacly - "Boards should be able to distinguish their corresponding slave's fingerprint"
     - midware stuff, not to connect to some other slave, if, e.g., two split boards are flashed with the same firmware
+- [ ] 4/21 - jpconstantineau - "have you guys considered using BLE as a way to edit the keymaps?"
+    - if there is some persistent storage from where the dynamic keymap loading is solvable, then there should be also a way to enter into a separate "reconfig" mode on the keyboard where it receives its update over BLE and rewrites its own keymap before rebooting
+    - this should go into a kind of "even-higher-ware" (better name pending), which is part platform specific (how to `setup` and `loop`) and part config (how to integrate and initialize the low-mid-high components)
+    - there could be a static way, too, where a build script compiles these, but if we want dynamic initialization, then the keymap/config interpreter has to be part of the firmware, too.
